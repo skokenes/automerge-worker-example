@@ -1,11 +1,13 @@
 import Automerge from "automerge";
 import transit from "transit-immutable-js";
 
+// This class will handle keeping track of the backend state
 class DocBackend {
   constructor() {
     this.backend = Automerge.Backend.init();
   }
 
+  // Loading a serialized document
   load(serializedDoc) {
     const changes = transit.fromJSON(serializedDoc);
     const [state] = Automerge.Backend.applyChanges(this.backend, changes);
@@ -14,7 +16,7 @@ class DocBackend {
     return patch;
   }
 
-  // Changes from the front end
+  // Apply changes from the front end
   applyLocalChange(change) {
     try {
       const [newState, patch] = Automerge.Backend.applyLocalChange(
@@ -29,7 +31,7 @@ class DocBackend {
     }
   }
 
-  // Changes from remote documents
+  // Applying changes from remote documents
   applyChanges(changes) {
     const [newState, patch] = Automerge.Backend.applyChanges(
       this.backend,
@@ -40,8 +42,10 @@ class DocBackend {
   }
 }
 
+// Create a new instance of the document backend for this worker instance
 const docBackend = new DocBackend();
 
+// Respond to messages from the frontend document
 addEventListener("message", (evt) => {
   const type = evt.data.type;
   const payload = evt.data.payload;
