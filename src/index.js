@@ -4,7 +4,7 @@ import Worker from "web-worker:./worker";
 // Initialize the worker
 const worker = new Worker();
 
-// Helper function for communicated with the worker.
+// Helper function for communicating with the worker.
 // When sending a message with `messageBackend()`, a Promise will be returned with the response
 let msgId = 0;
 const messageBackend = (msg) => {
