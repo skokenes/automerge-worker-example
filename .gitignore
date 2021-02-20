@@ -1,0 +1,4 @@
+node_modules
+public/bundle*
+.DS_Store
+package-lock.json
